@@ -1,0 +1,79 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  live probes of premierlacrosseleague.com/api/graphql, shop.premierlacrosseleague.com and its
+  /.well-known/ discovery documents on 2026-08-02
+docs: null
+note: >-
+  Derived from probes, not from an OpenAPI document — the Premier Lacrosse League publishes no
+  OpenAPI, no developer portal and no authentication documentation. Nothing here is inferred; each
+  scheme records an observed response.
+summary:
+  types: [none, oauth2, openIdConnect]
+  api_key_in: []
+  oauth2_flows: [authorizationCode, refreshToken, 'urn:ietf:params:oauth:grant-type:jwt-bearer']
+  public_read_surfaces: 2
+  developer_credentials_available: false
+schemes:
+- name: web-graphql-origin-restricted
+  type: none
+  applies_to: https://premierlacrosseleague.com/api/graphql
+  description: >-
+    The Apollo Server GraphQL API that backs the league's web and stats properties requires no
+    credential, but enforces a CORS-style origin allow-list at the application layer. A POST
+    without an allowed Origin header returns HTTP 403 with body {"error":"Origin not allowed"}.
+    With Origin set to https://premierlacrosseleague.com the request is accepted and validated.
+    There is no published way for a third party to obtain authorized access.
+  observed:
+    no_origin: {http_status: 403, body: '{"error":"Origin not allowed"}'}
+    allowed_origin: {http_status: 400, note: 'request accepted, failed GraphQL validation only'}
+  introspection_disabled: true
+- name: shop-storefront-public-json
+  type: none
+  applies_to: https://shop.premierlacrosseleague.com
+  description: >-
+    Product and collection JSON on the store is served unauthenticated
+    (GET /products/{handle}.json, GET /collections/{handle}/products.json,
+    GET /search?q={query}&type=product). Documented by the store's own llms.txt.
+  observed:
+    example: {url: 'https://shop.premierlacrosseleague.com/collections/all/products.json?limit=2', http_status: 200, content_type: application/json}
+- name: shop-customer-accounts
+  type: oauth2
+  subtype: openIdConnect
+  applies_to: https://shop.premierlacrosseleague.com
+  description: >-
+    OAuth 2.0 / OpenID Connect authorization server for shop customer accounts, discovered via
+    RFC 8414 and OIDC Discovery. Backs both the customer account API and the authenticated
+    customer-account MCP API used for agent commerce.
+  issuer: https://shopify.com/authentication/8037761076
+  authorizationUrl: https://account.premierlacrosseleague.com/authentication/oauth/authorize
+  tokenUrl: https://account.premierlacrosseleague.com/authentication/oauth/token
+  jwksUri: https://account.premierlacrosseleague.com/authentication/.well-known/jwks.json
+  pkce: [S256]
+  token_endpoint_auth_methods: [client_secret_basic]
+  id_token_signing_alg: [RS256]
+  scopes: 4
+  scopes_file: scopes/premier-lacrosse-league-scopes.yml
+  sources:
+  - well-known/premier-lacrosse-league-shop-oauth-authorization-server.json
+  - well-known/premier-lacrosse-league-shop-oauth-protected-resource.json
+- name: shop-ucp-agent-profile
+  type: agent-identity
+  applies_to: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  description: >-
+    The store's MCP endpoint does not gate on a bearer token for tools/list; it gates on a UCP
+    agent profile URI. An anonymous tools/list returns HTTP 422 with JSON-RPC error -32001
+    invalid_profile_url ("Unable to fetch agent profile: Missing profile uri"). Payment completion
+    additionally requires contemporaneous human buyer approval.
+  bearer_methods_supported: [header]
+gaps:
+- No API key programme, no developer registration, no partner/media data-access documentation.
+- No security.txt on any host, so no published security contact.
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - {url: 'https://premierlacrosseleague.com/api/graphql', method: POST, http_status: 403, note: no Origin header}
+  - {url: 'https://premierlacrosseleague.com/api/graphql', method: POST, http_status: 400, note: with allowed Origin; INTROSPECTION_DISABLED}
+  - {url: 'https://shop.premierlacrosseleague.com/.well-known/oauth-authorization-server', http_status: 200}
+  - {url: 'https://shop.premierlacrosseleague.com/.well-known/oauth-protected-resource', http_status: 200}
+  - {url: 'https://shop.premierlacrosseleague.com/api/ucp/mcp', method: POST, http_status: 422}

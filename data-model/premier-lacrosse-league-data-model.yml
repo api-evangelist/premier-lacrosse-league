@@ -1,0 +1,107 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  observed responses from shop.premierlacrosseleague.com product JSON and validation-error evidence
+  from premierlacrosseleague.com/api/graphql, 2026-08-02
+note: >-
+  There is no OpenAPI to derive an entity graph from and the GraphQL schema is not introspectable,
+  so this model is deliberately partial. Only entities and fields actually observed in a response
+  body — or confirmed to exist by a server-side validation error — are recorded. No relationship is
+  asserted that was not seen.
+entities:
+- name: Team
+  surface: web_graphql
+  confirmed_by: >-
+    GraphQL validation errors. Querying {teams{id}} returned 'Cannot query field "teams" on type
+    "Query". Did you mean "team" or "allTeams"?', and {allTeams{id}} returned 'Cannot query field
+    "id" on type "Team".' — which confirms a Query root with fields "team" and "allTeams", and a
+    Team type that does not expose "id" or "name".
+  fields_observed: []
+  fields_ruled_out: [id, name]
+  note: field set not enumerated; introspection is disabled and blind enumeration was not performed
+- name: Product
+  surface: shop_storefront_json
+  endpoint: GET /collections/{handle}/products.json
+  id_field: id
+  handle_field: handle
+  fields_observed:
+  - id
+  - title
+  - handle
+  - body_html
+  - published_at
+  - created_at
+  - updated_at
+  - vendor
+  - product_type
+  - tags
+  - variants
+  - images
+  - options
+- name: Variant
+  surface: shop_storefront_json
+  parent: Product
+  via: variants
+- name: ProductImage
+  surface: shop_storefront_json
+  parent: Product
+  via: images
+- name: ProductOption
+  surface: shop_storefront_json
+  parent: Product
+  via: options
+- name: Collection
+  surface: shop_storefront_json
+  endpoint: GET /collections/{handle}/products.json
+  handle_field: handle
+- name: Cart
+  surface: shop_mcp
+  confirmed_by: 'create_cart tool published in https://shop.premierlacrosseleague.com/llms.txt'
+- name: Checkout
+  surface: shop_mcp
+  confirmed_by: 'create_checkout / update_checkout / complete_checkout tools published in llms.txt'
+- name: Order
+  surface: shop_mcp
+  confirmed_by: 'dev.ucp.shopping.order capability advertised in /.well-known/ucp'
+- name: Customer
+  surface: shop_oauth
+  confirmed_by: >-
+    OIDC claims_supported (sub, email, email_verified) and the customer-account-api:full scope in
+    /.well-known/oauth-authorization-server
+relationships:
+- from: Product
+  to: Variant
+  kind: has_many
+  via: variants
+  evidence: observed in /collections/all/products.json
+- from: Product
+  to: ProductImage
+  kind: has_many
+  via: images
+  evidence: observed in /collections/all/products.json
+- from: Product
+  to: ProductOption
+  kind: has_many
+  via: options
+  evidence: observed in /collections/all/products.json
+- from: Collection
+  to: Product
+  kind: has_many
+  via: /collections/{handle}/products.json
+  evidence: observed
+- from: Cart
+  to: Checkout
+  kind: has_one
+  via: create_checkout
+  evidence: 'agent flow documented in llms.txt: search_catalog -> create_cart -> create_checkout'
+- from: Checkout
+  to: Order
+  kind: has_one
+  via: complete_checkout
+  evidence: 'dev.ucp.shopping.order capability + documented agent flow'
+render: null
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - {url: 'https://shop.premierlacrosseleague.com/collections/all/products.json?limit=2', http_status: 200}
+  - {url: 'https://premierlacrosseleague.com/api/graphql', http_status: 400, note: field-validation errors used as existence evidence only}

@@ -1,23 +1,122 @@
 aid: premier-lacrosse-league
 name: Premier Lacrosse League
-description: 'Premier Lacrosse League is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'The Premier Lacrosse League (PLL) is the professional field lacrosse league of
+  North America, founded in 2018 by brothers Paul and Mike Rabil and headquartered in El Segundo,
+  California. It played its inaugural season in 2019 as a tour-based league, absorbed Major League
+  Lacrosse in December 2020, and now fields eight city-affiliated clubs across an Eastern and a
+  Western conference. Games are carried by ESPN, ESPN2, ABC and ESPN+, and investors include The
+  Chernin Group, The Raine Group, Arctos Partners and ESPN itself. Digitally the league runs a
+  Next.js web property with an Apollo GraphQL API behind it (premierlacrosseleague.com/api/graphql),
+  a dedicated stats site, iOS and Android apps, and a Shopify-hosted merchandise store that
+  publishes an llms.txt, a Universal Commerce Protocol (UCP) profile and an MCP endpoint for
+  agent-driven commerce. The league publishes no developer portal, no OpenAPI and no public API
+  documentation; every machine-readable surface below was discovered by probing.'
 url: https://raw.githubusercontent.com/api-evangelist/premier-lacrosse-league/refs/heads/main/apis.yml
+image: https://premierlacrosseleague.com/wp-content/uploads/2019/03/PLL__Square_Logo_Social.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
-apis: []
+- Sports
+- Lacrosse
+- Professional Sports League
+- Sports Statistics
+- Media and Entertainment
+- Ecommerce
+- Agent Commerce
+- GraphQL
+- Fantasy Sports
+apis:
+- name: Premier Lacrosse League Web GraphQL API
+  description: 'Apollo Server GraphQL API that backs premierlacrosseleague.com and
+    stats.premierlacrosseleague.com (teams, players, games, standings, stats). Undocumented and
+    unadvertised: there is no developer portal, no schema download and no API key programme.
+    Introspection is disabled in production and the endpoint is CORS origin-restricted to the
+    league''s own web properties. Confirmed live by probe on 2026-08-02.'
+  humanURL: https://stats.premierlacrosseleague.com/
+  baseURL: https://premierlacrosseleague.com/api/graphql
+  tags:
+  - GraphQL
+  - Sports Statistics
+  properties:
+  - type: GraphQL
+    url: https://premierlacrosseleague.com/api/graphql
+  - type: Authentication
+    url: authentication/premier-lacrosse-league-authentication.yml
+  - type: ErrorCatalog
+    url: errors/premier-lacrosse-league-problem-types.yml
+- name: Premier Lacrosse League Shop Storefront and Agent Commerce API
+  description: 'The league''s Shopify-hosted merchandise store exposes a public, unauthenticated
+    product/collection JSON surface, a Universal Commerce Protocol (UCP) merchant profile at
+    /.well-known/ucp, an MCP endpoint at /api/ucp/mcp for agent-driven shopping and checkout, an
+    OAuth 2.0 / OpenID Connect customer-account authorization server, and an agent-facing llms.txt
+    describing all of it. All of these are served from the league''s own shop host.'
+  humanURL: https://shop.premierlacrosseleague.com/
+  baseURL: https://shop.premierlacrosseleague.com
+  tags:
+  - Ecommerce
+  - Agent Commerce
+  - MCP
+  properties:
+  - type: MCPServer
+    url: mcp/premier-lacrosse-league-mcp.yml
+  - type: LLMsTxt
+    url: llms/premier-lacrosse-league-shop-llms.txt
+  - type: OAuthScopes
+    url: scopes/premier-lacrosse-league-scopes.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/premier-lacrosse-league-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/premier-lacrosse-league_stock/
+  url: https://premierlacrosseleague.com/
+- type: Blog
+  url: https://premierlacrosseleague.com/articles
+- type: Support
+  url: https://premierlacrosseleague.com/contact-page
+- type: TermsOfService
+  url: https://premierlacrosseleague.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://premierlacrosseleague.com/privacy-policy
+- type: SignUp
+  url: https://shop.premierlacrosseleague.com/account/register
+- type: Login
+  url: https://shop.premierlacrosseleague.com/account/login
+- type: GitHubOrganization
+  url: https://github.com/Premier-Lacrosse-League
+- type: WellKnown
+  url: well-known/premier-lacrosse-league-well-known.yml
+- type: LLMsTxt
+  url: llms/premier-lacrosse-league-llms.txt
+- type: MCPServer
+  url: mcp/premier-lacrosse-league-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Authentication
+  url: authentication/premier-lacrosse-league-authentication.yml
+- type: OAuthScopes
+  url: scopes/premier-lacrosse-league-scopes.yml
+- type: ErrorCatalog
+  url: errors/premier-lacrosse-league-problem-types.yml
+- type: Conventions
+  url: conventions/premier-lacrosse-league-conventions.yml
+- type: Conformance
+  url: conformance/premier-lacrosse-league-conformance.yml
+- type: Lifecycle
+  url: lifecycle/premier-lacrosse-league-lifecycle.yml
+- type: DataModel
+  url: data-model/premier-lacrosse-league-data-model.yml
+x-enrichment:
+  date: '2026-08-02'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1

@@ -1,0 +1,79 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  observed error responses from premierlacrosseleague.com/api/graphql and
+  shop.premierlacrosseleague.com/api/ucp/mcp on 2026-08-02
+format: mixed
+note: >-
+  The Premier Lacrosse League publishes no error reference. There is no OpenAPI to derive 4xx/5xx
+  responses from and no RFC 9457 application/problem+json anywhere on the estate. Every entry below
+  is an error envelope actually returned during probing; nothing is inferred or invented.
+envelopes:
+- surface: https://premierlacrosseleague.com/api/graphql
+  format: graphql-errors
+  spec: GraphQL over HTTP (Apollo Server)
+  shape: '{"errors":[{"message":"...","locations":[...],"extensions":{"code":"...","validationErrorCode":"...","stacktrace":[...]}}]}'
+  observation: >-
+    Apollo Server is running with stack traces enabled in the error extensions, which leaks the
+    server file layout (/app/node_modules/...), the Sentry OpenTelemetry instrumentation in use and
+    the Node runtime internals. This is a production information-disclosure smell worth flagging to
+    the provider.
+- surface: https://premierlacrosseleague.com/api/graphql
+  format: bare-json
+  shape: '{"error":"Origin not allowed"}'
+- surface: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  format: jsonrpc-2.0-error
+  spec: JSON-RPC 2.0 / Model Context Protocol
+  shape: '{"jsonrpc":"2.0","id":N,"error":{"code":-32001,"message":"...","data":{"code":"...","content":"...","continue_url":"..."}}}'
+problems:
+- status: 403
+  surface: https://premierlacrosseleague.com/api/graphql
+  code: null
+  title: Origin not allowed
+  detail: >-
+    Returned for any POST whose Origin header is not on the league's allow-list. The body is a bare
+    JSON object with a single "error" string — not a GraphQL errors array.
+  remediation: >-
+    Not remediable by a third party; the endpoint is restricted to the league's own web properties.
+- status: 400
+  surface: https://premierlacrosseleague.com/api/graphql
+  code: GRAPHQL_VALIDATION_FAILED
+  extension_code: INTROSPECTION_DISABLED
+  title: GraphQL introspection is not allowed by Apollo Server
+  detail: >-
+    Any query containing __schema or __type is rejected. Apollo Server is configured with
+    introspection disabled in production, so the schema cannot be retrieved.
+  remediation: Use the league's own web clients; no public schema is published.
+- status: 400
+  surface: https://premierlacrosseleague.com/api/graphql
+  code: GRAPHQL_VALIDATION_FAILED
+  title: Cannot query field "X" on type "Y"
+  detail: >-
+    Standard GraphQL field validation error. Observed to include "Did you mean" suggestions on the
+    Query root type (e.g. querying "teams" suggested "team" and "allTeams"), which confirms those
+    root fields exist even with introspection disabled.
+  remediation: Query only fields that exist on the type.
+- status: 422
+  surface: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  code: -32001
+  data_code: invalid_profile_url
+  title: UCP discovery failed
+  detail: 'Unable to fetch agent profile: Missing profile uri'
+  remediation: >-
+    Present a resolvable UCP agent profile URI on the MCP request so the store can fetch the calling
+    agent's profile before listing tools.
+- status: 429
+  surface: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  code: null
+  title: Rate limited
+  detail: >-
+    The store's llms.txt documents that the MCP endpoint is rate-limited per IP and instructs agents
+    to back off on 429 responses. Not triggered during probing.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  remediation: Exponential backoff.
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - {url: 'https://premierlacrosseleague.com/api/graphql', http_status: 403}
+  - {url: 'https://premierlacrosseleague.com/api/graphql', http_status: 400}
+  - {url: 'https://shop.premierlacrosseleague.com/api/ucp/mcp', http_status: 422}

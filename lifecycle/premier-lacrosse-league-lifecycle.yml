@@ -1,0 +1,54 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  live probes of the Premier Lacrosse League estate, 2026-08-02
+note: >-
+  The league runs no developer programme, so most lifecycle commitments a consumer would look for
+  simply do not exist. Recorded as absent rather than omitted, so the gap is visible.
+versioning:
+- surface: https://premierlacrosseleague.com/api/graphql
+  scheme: none
+  current: null
+  docs: null
+  note: single unversioned GraphQL endpoint
+- surface: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  scheme: dated
+  current: '2026-04-08'
+  supported: ['2026-04-08', '2026-01-23']
+  discovery: https://shop.premierlacrosseleague.com/.well-known/ucp
+  note: version negotiation is a property of the Universal Commerce Protocol, not a league policy
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  evidence: no RFC 8594 Sunset or Deprecation headers observed; no deprecation policy published
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  evidence: >-
+    status.premierlacrosseleague.com does not resolve (NXDOMAIN); no status page linked from the
+    website, the shop or robots/sitemap
+changelog:
+  url: null
+  evidence: no dated API or platform changelog published
+support:
+  url: https://premierlacrosseleague.com/contact-page
+  security_contact: null
+  evidence: no security.txt on any host
+deprecated_operations: []
+company_lifecycle:
+  founded: 2018
+  first_season: 2019
+  merger:
+    with: Major League Lacrosse
+    date: '2020-12-16'
+  teams: 8
+  headquarters: El Segundo, California, United States
+  source: https://en.wikipedia.org/wiki/Premier_Lacrosse_League
+x-evidence:
+  fetched: '2026-08-02'
+  probes:
+  - {host: 'status.premierlacrosseleague.com', dns: NXDOMAIN}
+  - {url: 'https://shop.premierlacrosseleague.com/.well-known/ucp', http_status: 200}

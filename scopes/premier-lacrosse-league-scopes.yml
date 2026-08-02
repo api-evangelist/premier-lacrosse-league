@@ -1,0 +1,56 @@
+generated: '2026-08-02'
+method: probed
+source: https://shop.premierlacrosseleague.com/.well-known/oauth-authorization-server
+docs: null
+note: >-
+  The Premier Lacrosse League publishes no OAuth documentation. These scopes were read directly
+  from the OAuth 2.0 Authorization Server Metadata (RFC 8414) / OpenID Connect Discovery document
+  served by the league's Shopify-hosted store. They govern customer-account access to the shop,
+  not access to league statistics — the PLL web GraphQL API has no OAuth surface at all.
+schemes:
+- name: shop-customer-accounts
+  type: oauth2
+  issuer: https://shopify.com/authentication/8037761076
+  source: well-known/premier-lacrosse-league-shop-oauth-authorization-server.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://account.premierlacrosseleague.com/authentication/oauth/authorize
+    tokenUrl: https://account.premierlacrosseleague.com/authentication/oauth/token
+    endSessionUrl: https://account.premierlacrosseleague.com/authentication/logout
+    jwksUri: https://account.premierlacrosseleague.com/authentication/.well-known/jwks.json
+    pkce: [S256]
+  - flow: refreshToken
+  - flow: 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+  token_endpoint_auth_methods: [client_secret_basic]
+  id_token_signing_alg: [RS256]
+scopes:
+- scope: openid
+  description: OpenID Connect authentication; issues an ID token for the shop customer.
+  flows: [authorizationCode]
+  sources: [well-known/premier-lacrosse-league-shop-oauth-authorization-server.json]
+- scope: email
+  description: Access to the customer's email address and email_verified claim.
+  flows: [authorizationCode]
+  sources: [well-known/premier-lacrosse-league-shop-oauth-authorization-server.json]
+- scope: customer-account-api:full
+  description: Full access to the authenticated customer's Shopify Customer Account API surface.
+  flows: [authorizationCode]
+  sources: [well-known/premier-lacrosse-league-shop-oauth-authorization-server.json]
+- scope: customer-account-mcp-api:full
+  description: >-
+    Full access to the customer-account MCP API — the authenticated agent-commerce surface behind
+    the store's UCP MCP endpoint.
+  flows: [authorizationCode]
+  sources: [well-known/premier-lacrosse-league-shop-oauth-authorization-server.json]
+protected_resource:
+  resource: https://shop.premierlacrosseleague.com
+  authorization_servers:
+  - https://account.premierlacrosseleague.com
+  - https://shopify.com/authentication/8037761076
+  bearer_methods_supported: [header]
+  source: well-known/premier-lacrosse-league-shop-oauth-protected-resource.json
+x-evidence:
+  fetched: '2026-08-02'
+  url: https://shop.premierlacrosseleague.com/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json

@@ -1,0 +1,10 @@
+{
+    "resource": "https://shop.premierlacrosseleague.com",
+    "authorization_servers": [
+        "https://account.premierlacrosseleague.com",
+        "https://shopify.com/authentication/8037761076"
+    ],
+    "bearer_methods_supported": [
+        "header"
+    ]
+}

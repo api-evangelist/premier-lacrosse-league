@@ -1,0 +1,107 @@
+generated: '2026-08-02'
+method: searched
+source: probe of every Premier Lacrosse League host on 2026-08-02
+summary:
+  hosts_probed: 3
+  documents_found: 4
+  note: >-
+    Only the Shopify-hosted merchandise store publishes a /.well-known/ discovery surface. The
+    league's own web and stats hosts return 404 for every well-known path probed, including
+    security.txt. No agent card was found at either the canonical /.well-known/agent-card.json or
+    the legacy /.well-known/agent.json on any host.
+hosts:
+- host: https://premierlacrosseleague.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+    note: >-
+      Carries a Cloudflare-managed Content Signals policy —
+      "Content-Signal: search=yes,ai-train=no,use=reference" — plus explicit Disallow blocks for
+      Amazonbot, Applebot-Extended and Bytespider.
+- host: https://stats.premierlacrosseleague.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+  - path: /robots.txt
+    status: 200
+- host: https://shop.premierlacrosseleague.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: premier-lacrosse-league-shop-openid-configuration.json
+    spec: OpenID Connect Discovery 1.0
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: premier-lacrosse-league-shop-oauth-authorization-server.json
+    spec: RFC 8414
+    note: byte-identical to the openid-configuration document
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: premier-lacrosse-league-shop-oauth-protected-resource.json
+    spec: RFC 9728
+  - path: /.well-known/ucp
+    status: 200
+    content_type: application/json
+    file: premier-lacrosse-league-shop-ucp.json
+    spec: Universal Commerce Protocol 2026-04-08
+    note: >-
+      Advertises the store's MCP endpoint, supported UCP versions (2026-04-08, 2026-01-23),
+      shopping capabilities (cart, checkout, fulfillment, discount, order, catalog search/lookup)
+      and payment handlers.
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    file: ../llms/premier-lacrosse-league-shop-llms.txt
+  - path: /agents.md
+    status: 200
+    note: canonical agent-facing description; llms.txt mirrors it
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+x-evidence:
+  fetched: '2026-08-02'
+  method: HTTP GET, status recorded per path

@@ -1,0 +1,89 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  live probes of the Premier Lacrosse League web, stats and shop hosts, 2026-08-02
+note: >-
+  Asserted only from observed artifacts. The league makes no compliance or standards claims of its
+  own anywhere on its public surface; several of the conformant entries below are inherited from the
+  Shopify platform hosting its store, and are marked as such. No Compliance pointer is emitted in
+  apis.yml because no certification programme (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP) is
+  published by the league.
+standards:
+- id: openapi
+  conforms: false
+  evidence: no OpenAPI or Swagger document found at any probed path on any host
+- id: asyncapi
+  conforms: false
+  evidence: no event, streaming or webhook surface published
+- id: graphql
+  conforms: true
+  evidence: >-
+    Apollo Server GraphQL endpoint live at https://premierlacrosseleague.com/api/graphql; standard
+    GraphQL-over-HTTP request/response and errors[] envelope observed
+  caveat: introspection disabled in production; origin-restricted; schema not published
+- id: graphql-introspection
+  conforms: false
+  evidence: 'INTROSPECTION_DISABLED validation error returned for any __schema/__type query'
+- id: oauth2
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: 'authorization_endpoint + token_endpoint + authorization_code and refresh_token grants in /.well-known/oauth-authorization-server'
+  inherited_from: Shopify customer accounts
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: '/.well-known/oauth-authorization-server returns 200 application/json'
+  inherited_from: Shopify
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: '/.well-known/oauth-protected-resource returns 200 with resource + authorization_servers'
+  inherited_from: Shopify
+- id: oidc-discovery
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: '/.well-known/openid-configuration returns 200 with issuer, jwks_uri, id_token_signing_alg_values_supported RS256'
+  inherited_from: Shopify
+- id: rfc7636-pkce
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: 'code_challenge_methods_supported: ["S256"]'
+  inherited_from: Shopify
+- id: mcp
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: 'JSON-RPC 2.0 MCP endpoint at /api/ucp/mcp responds to tools/list with a well-formed JSON-RPC error object'
+  caveat: tools/list requires a UCP agent profile URI, so the tool schemas are not anonymously retrievable
+- id: ucp-universal-commerce-protocol
+  conforms: true
+  version: '2026-04-08'
+  scope: shop.premierlacrosseleague.com
+  evidence: '/.well-known/ucp advertises services, capabilities and payment handlers for UCP 2026-04-08 and 2026-01-23'
+  inherited_from: Shopify
+- id: llmstxt
+  conforms: true
+  scope: shop.premierlacrosseleague.com
+  evidence: 'https://shop.premierlacrosseleague.com/llms.txt returns 200 text/plain'
+  caveat: league web and stats hosts return 404 for /llms.txt
+- id: content-signals
+  conforms: true
+  scope: premierlacrosseleague.com
+  evidence: 'robots.txt carries Content-Signal: search=yes,ai-train=no,use=reference'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: '/.well-known/security.txt returns 404 on every host probed'
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: no application/problem+json returned by any surface
+- id: a2a-agent-card
+  conforms: false
+  evidence: '/.well-known/agent-card.json and /.well-known/agent.json both 404 on every host probed'
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation headers observed; no deprecation policy published
+- id: hsts
+  conforms: true
+  evidence: 'strict-transport-security: max-age=63072000; includeSubDomains observed on premierlacrosseleague.com'
+certifications_published: []
+x-evidence:
+  fetched: '2026-08-02'

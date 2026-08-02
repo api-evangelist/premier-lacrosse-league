@@ -1,0 +1,21 @@
+generated: '2026-08-02'
+method: generated
+source: >-
+  grounded in the tool names, agent flow and rules published at
+  https://shop.premierlacrosseleague.com/llms.txt and the capabilities at
+  https://shop.premierlacrosseleague.com/.well-known/ucp
+note: >-
+  Only one skill is packaged. The league's statistics surface (the web GraphQL API) is
+  origin-restricted, undocumented and not introspectable, so there is no honest way to ground an
+  agent skill in it — no skill is authored for it rather than inventing operations.
+skills:
+- file: premier-lacrosse-league-shop-agent-commerce.md
+  name: Buy Premier Lacrosse League merchandise as an agent
+  api: mcp/premier-lacrosse-league-mcp.yml
+  surface: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  operations:
+  - search_catalog
+  - create_cart
+  - create_checkout
+  - update_checkout
+  - complete_checkout

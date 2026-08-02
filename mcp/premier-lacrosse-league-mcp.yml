@@ -1,0 +1,86 @@
+generated: '2026-08-02'
+method: searched
+source: https://shop.premierlacrosseleague.com/llms.txt
+status: published
+server:
+  name: premier-lacrosse-league-shop
+  transport: http
+  protocol: JSON-RPC 2.0 over HTTP POST
+  url: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  alternate_url: https://premier-lacrosse-league-shop.myshopify.com/api/ucp/mcp
+  discovery: https://shop.premierlacrosseleague.com/.well-known/ucp
+  vendor: Shopify (Universal Commerce Protocol implementation)
+  scope: >-
+    Merchandise commerce only. This MCP server exposes the league's Shopify storefront to shopping
+    agents. There is no MCP server for PLL scores, schedules, standings or player statistics.
+introspection:
+  method: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  attempted: '2026-08-02'
+  http_status: 422
+  result: gated
+  error:
+    code: -32001
+    message: UCP discovery failed
+    data_code: invalid_profile_url
+    detail: 'Unable to fetch agent profile: Missing profile uri'
+  note: >-
+    tools/list requires the calling agent to present a resolvable UCP agent profile URI, so live
+    inputSchema introspection is not available anonymously. The tool names and the canonical call
+    order below are taken verbatim from the store's own published llms.txt / agents.md; their input
+    schemas are defined by the UCP shopping service OpenRPC document referenced in the UCP profile
+    (https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json) and are NOT reproduced here.
+tools:
+- name: search_catalog
+  description: Find products in the store matching the buyer's intent.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  capability: dev.ucp.shopping.catalog.search
+- name: create_cart
+  description: Create a cart and add the desired items.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  capability: dev.ucp.shopping.cart
+- name: create_checkout
+  description: Start the purchase flow for a cart.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  capability: dev.ucp.shopping.checkout
+- name: update_checkout
+  description: Set the shipping address and shipping method on a checkout.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  capability: dev.ucp.shopping.fulfillment
+- name: complete_checkout
+  description: Finalize the purchase. Requires explicit contemporaneous buyer approval of payment.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+  capability: dev.ucp.shopping.checkout
+capabilities_advertised:
+  ucp_version: '2026-04-08'
+  supported_versions:
+  - '2026-04-08'
+  - '2026-01-23'
+  services:
+  - dev.ucp.shopping
+  capabilities:
+  - dev.ucp.shopping.checkout
+  - dev.ucp.shopping.fulfillment
+  - dev.ucp.shopping.discount
+  - dev.ucp.shopping.cart
+  - dev.ucp.shopping.order
+  - dev.ucp.shopping.catalog.search
+  - dev.ucp.shopping.catalog.lookup
+  - dev.shopify.catalog
+  source: well-known/premier-lacrosse-league-shop-ucp.json
+rules:
+- Checkout requires human approval; agents must not complete payment without explicit buyer consent.
+- The MCP endpoint is rate-limited per IP; back off on HTTP 429.
+- Pass context.address_country and context.currency for accurate pricing and availability.
+x-evidence:
+  fetched: '2026-08-02'
+  urls:
+  - url: https://shop.premierlacrosseleague.com/llms.txt
+    http_status: 200
+    content_type: text/plain
+  - url: https://shop.premierlacrosseleague.com/.well-known/ucp
+    http_status: 200
+    content_type: application/json
+  - url: https://shop.premierlacrosseleague.com/api/ucp/mcp
+    http_status: 422
+    content_type: application/json
+    note: JSON-RPC error -32001 invalid_profile_url on anonymous tools/list

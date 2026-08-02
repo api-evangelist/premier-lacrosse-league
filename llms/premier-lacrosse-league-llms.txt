@@ -1,0 +1,71 @@
+# Premier Lacrosse League
+
+> The Premier Lacrosse League (PLL) is the professional field lacrosse league of North America,
+> founded in 2018 by Paul and Mike Rabil and headquartered in El Segundo, California. It played its
+> first season in 2019, absorbed Major League Lacrosse in December 2020, and now fields eight
+> city-affiliated clubs across an Eastern and a Western conference, broadcast on ESPN, ESPN2, ABC
+> and ESPN+. The league publishes no developer portal, no OpenAPI and no public API documentation.
+> The machine-readable surfaces listed below were discovered by probing on 2026-08-02 and are
+> recorded here as observed, not as an offer of access.
+
+## Agent policy
+
+- `robots.txt` on premierlacrosseleague.com carries `Content-Signal: search=yes,ai-train=no,use=reference`.
+  Search indexing is permitted; training on this content is not; use is limited to reference.
+- Amazonbot, Applebot-Extended and Bytespider are explicitly disallowed.
+- Completing a purchase on the shop MCP endpoint requires explicit, contemporaneous human approval.
+
+## APIs
+
+- [Web GraphQL API](https://premierlacrosseleague.com/api/graphql): Apollo Server endpoint backing
+  the league's web and stats properties. Undocumented, CORS origin-restricted to league properties,
+  introspection disabled in production. Query root fields `team` and `allTeams` confirmed to exist.
+- [Shop storefront JSON](https://shop.premierlacrosseleague.com/collections/all/products.json):
+  public, unauthenticated product and collection JSON on the league's Shopify-hosted store.
+  Supports `limit` (up to 250) and `page`.
+- [Shop UCP MCP endpoint](https://shop.premierlacrosseleague.com/api/ucp/mcp): JSON-RPC 2.0 MCP
+  server for agent-driven commerce. `tools/list` requires a UCP agent profile URI.
+
+## Specs and discovery
+
+- [UCP merchant profile](https://shop.premierlacrosseleague.com/.well-known/ucp): Universal Commerce
+  Protocol 2026-04-08 (and 2026-01-23) services, capabilities and payment handlers.
+- [OAuth authorization server metadata](https://shop.premierlacrosseleague.com/.well-known/oauth-authorization-server): RFC 8414.
+- [OpenID Connect discovery](https://shop.premierlacrosseleague.com/.well-known/openid-configuration): OIDC Discovery 1.0.
+- [OAuth protected resource metadata](https://shop.premierlacrosseleague.com/.well-known/oauth-protected-resource): RFC 9728.
+- [Shop llms.txt](https://shop.premierlacrosseleague.com/llms.txt): the store's own agent instructions.
+- No OpenAPI, no AsyncAPI, no A2A agent card, no security.txt anywhere on the estate.
+
+## Human surfaces
+
+- [Website](https://premierlacrosseleague.com/)
+- [Stats](https://stats.premierlacrosseleague.com/)
+- [Advanced stats](https://stats.premierlacrosseleague.com/advanced-stats)
+- [Schedule](https://premierlacrosseleague.com/schedule)
+- [Standings](https://premierlacrosseleague.com/standings)
+- [Articles](https://premierlacrosseleague.com/articles)
+- [Shop](https://shop.premierlacrosseleague.com/)
+- [Contact](https://premierlacrosseleague.com/contact-page)
+- [Terms of service](https://premierlacrosseleague.com/terms-of-service)
+- [Privacy policy](https://premierlacrosseleague.com/privacy-policy)
+- [GitHub organization](https://github.com/Premier-Lacrosse-League)
+- [Careers](https://www.teamworkonline.com/other-sports-jobs/premier-lacrosse-jobs/premier-lacrosse-league-careers)
+
+## Apps
+
+- [PLL for iOS](https://apps.apple.com/us/app/pll/id1618489206)
+- [PLL for Android](https://play.google.com/store/apps/details?id=com.pll.pllandroid)
+
+## API Evangelist artifacts
+
+- `well-known/premier-lacrosse-league-well-known.yml` — full well-known probe index with statuses
+- `mcp/premier-lacrosse-league-mcp.yml` — the shop UCP MCP server and its published tool list
+- `authentication/premier-lacrosse-league-authentication.yml` — observed authentication profile
+- `scopes/premier-lacrosse-league-scopes.yml` — OAuth scopes read from the discovery document
+- `errors/premier-lacrosse-league-problem-types.yml` — observed error envelopes
+- `conventions/premier-lacrosse-league-conventions.yml` — pagination, versioning, rate-limit policy
+- `conformance/premier-lacrosse-league-conformance.yml` — standards conformance, probed
+- `lifecycle/premier-lacrosse-league-lifecycle.yml` — versioning, deprecation, status (all absent)
+- `data-model/premier-lacrosse-league-data-model.yml` — partial entity graph, observed only
+- `security/premier-lacrosse-league-domain-security.yml` — TLS/HSTS/DNS posture
+- `skills/premier-lacrosse-league-shop-agent-commerce.md` — packaged agent skill for the shop

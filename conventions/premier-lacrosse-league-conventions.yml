@@ -1,0 +1,97 @@
+generated: '2026-08-02'
+method: probed
+source: >-
+  live probes of premierlacrosseleague.com/api/graphql and shop.premierlacrosseleague.com plus the
+  store's published llms.txt, 2026-08-02
+note: >-
+  The Premier Lacrosse League publishes no API documentation, no style guide and no conventions
+  page. Everything recorded here was observed on the wire or read from the store's own llms.txt.
+  Where a convention is absent it is recorded as absent — that is real, scoreable data, not a gap
+  to be filled in on the provider's behalf.
+surfaces:
+  web_graphql: https://premierlacrosseleague.com/api/graphql
+  shop_storefront_json: https://shop.premierlacrosseleague.com
+  shop_mcp: https://shop.premierlacrosseleague.com/api/ucp/mcp
+authentication:
+  style: >-
+    Origin allow-list (no credential) on the web GraphQL API; unauthenticated public JSON on the
+    storefront; OAuth 2.0 authorization code + PKCE S256 for shop customer accounts; UCP agent
+    profile URI for the MCP endpoint.
+  artifact: authentication/premier-lacrosse-league-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No Idempotency-Key header, no idempotency documentation, and no OpenAPI in which an idempotency
+    parameter could be declared. The only mutating surface (UCP checkout) relies on cart/checkout
+    resource identity plus mandatory human approval rather than a client-supplied idempotency key.
+pagination:
+- surface: shop_storefront_json
+  style: page-number
+  params:
+    limit: {max_observed: 250, default_observed: 30}
+    page: {base: 1}
+  response_fields: ['products[]']
+  observed:
+  - {url: '/collections/all/products.json?limit=2', http_status: 200, returned: 2}
+  - {url: '/collections/all/products.json?limit=2&page=2', http_status: 200, returned: 2, note: distinct first handle from page 1}
+  - {url: '/collections/all/products.json?limit=250', http_status: 200, returned: 250}
+  note: no cursor, no Link header, no total-count field observed
+- surface: web_graphql
+  style: unknown
+  note: schema is not introspectable, so the pagination pattern cannot be observed
+field_selection:
+  style: graphql-selection-set
+  surface: web_graphql
+  note: >-
+    Root fields "team" and "allTeams" were confirmed to exist on the Query type via validation-error
+    suggestions; the field set of the Team type could not be observed and is deliberately not
+    guessed here.
+metadata:
+  supported: false
+request_tracing:
+  request_id_header: null
+  observed_response_headers: [server, strict-transport-security]
+  note: >-
+    No x-request-id, x-correlation-id or equivalent trace header returned by the GraphQL endpoint.
+    Sentry OpenTelemetry instrumentation is present server-side (visible in leaked error stack
+    traces) but no trace identifier is surfaced to the caller.
+versioning:
+- surface: web_graphql
+  scheme: none
+  note: unversioned single endpoint at /api/graphql
+- surface: shop_mcp
+  scheme: dated
+  current: '2026-04-08'
+  supported: ['2026-04-08', '2026-01-23']
+  negotiation: 'GET /.well-known/ucp advertises supported_versions with per-version profile URLs'
+error_envelope:
+  web_graphql: graphql-errors array with extensions.code (Apollo)
+  web_graphql_cors: '{"error": "<string>"}'
+  shop_mcp: JSON-RPC 2.0 error object with numeric code and data.code
+  rfc9457: false
+  artifact: errors/premier-lacrosse-league-problem-types.yml
+rate_limiting:
+  documented: partial
+  signal_headers: []
+  policy: >-
+    "The MCP endpoint is rate-limited per IP. Back off on 429 responses." — the only rate-limit
+    statement the league publishes anywhere, and it carries no numeric quota, no window and no
+    response headers.
+  source: https://shop.premierlacrosseleague.com/llms.txt
+agent_policy:
+  content_signals: 'search=yes, ai-train=no, use=reference'
+  content_signals_source: https://premierlacrosseleague.com/robots.txt
+  disallowed_agents: [Amazonbot, Applebot-Extended, Bytespider]
+  human_in_the_loop: >-
+    Checkout completion on the MCP surface requires explicit contemporaneous buyer approval of
+    payment; agents that cannot obtain it are directed to route through Shop Pay.
+cross_links:
+  authentication: authentication/premier-lacrosse-league-authentication.yml
+  scopes: scopes/premier-lacrosse-league-scopes.yml
+  errors: errors/premier-lacrosse-league-problem-types.yml
+  lifecycle: lifecycle/premier-lacrosse-league-lifecycle.yml
+  well_known: well-known/premier-lacrosse-league-well-known.yml
+  mcp: mcp/premier-lacrosse-league-mcp.yml
+x-evidence:
+  fetched: '2026-08-02'
