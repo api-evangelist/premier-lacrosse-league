@@ -1,0 +1,14 @@
+{
+  "repo": "premier-lacrosse-league",
+  "feeds": [
+    {
+      "source": "https://premierlacrosseleague.com/",
+      "feed_url": "https://premierlacrosseleague.com/feed/",
+      "title": "",
+      "saved": 30,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 30,
+  "fetched": "2026-08-06T14:08:46Z"
+}
