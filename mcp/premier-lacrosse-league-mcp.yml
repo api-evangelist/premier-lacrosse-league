@@ -10,11 +10,10 @@ server:
   alternate_url: https://premier-lacrosse-league-shop.myshopify.com/api/ucp/mcp
   discovery: https://shop.premierlacrosseleague.com/.well-known/ucp
   vendor: Shopify (Universal Commerce Protocol implementation)
-  scope: >-
-    Merchandise commerce only. This MCP server exposes the league's Shopify storefront to shopping
+  scope: Merchandise commerce only. This MCP server exposes the league's Shopify storefront to shopping
     agents. There is no MCP server for PLL scores, schedules, standings or player statistics.
 introspection:
-  method: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  method: POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}
   attempted: '2026-08-02'
   http_status: 422
   result: gated
@@ -23,12 +22,11 @@ introspection:
     message: UCP discovery failed
     data_code: invalid_profile_url
     detail: 'Unable to fetch agent profile: Missing profile uri'
-  note: >-
-    tools/list requires the calling agent to present a resolvable UCP agent profile URI, so live
-    inputSchema introspection is not available anonymously. The tool names and the canonical call
-    order below are taken verbatim from the store's own published llms.txt / agents.md; their input
-    schemas are defined by the UCP shopping service OpenRPC document referenced in the UCP profile
-    (https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json) and are NOT reproduced here.
+  note: tools/list requires the calling agent to present a resolvable UCP agent profile URI, so live inputSchema
+    introspection is not available anonymously. The tool names and the canonical call order below are
+    taken verbatim from the store's own published llms.txt / agents.md; their input schemas are defined
+    by the UCP shopping service OpenRPC document referenced in the UCP profile (https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json)
+    and are NOT reproduced here.
 tools:
 - name: search_catalog
   description: Find products in the store matching the buyer's intent.
@@ -84,3 +82,11 @@ x-evidence:
     http_status: 422
     content_type: application/json
     note: JSON-RPC error -32001 invalid_profile_url on anonymous tools/list
+deployment:
+  mode: remote
+  endpoint: https://shop.premierlacrosseleague.com/api/ucp/mcp
+  verified: probed
+  probe: live
+  tools: 13
+  checked: '2026-08-12'
+  source: catalog MCP census
