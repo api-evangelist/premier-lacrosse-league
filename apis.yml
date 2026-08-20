@@ -27,6 +27,17 @@ tags:
 - Professional Sports League
 - Sports Statistics
 - Media and Entertainment
+- E-Commerce
+- Agent Commerce
+- GraphQL
+- Fantasy Sports
+tags_raw:
+- Company
+- Sports
+- Lacrosse
+- Professional Sports League
+- Sports Statistics
+- Media and Entertainment
 - Ecommerce
 - Agent Commerce
 - GraphQL
@@ -59,6 +70,10 @@ apis:
   humanURL: https://shop.premierlacrosseleague.com/
   baseURL: https://shop.premierlacrosseleague.com
   tags:
+  - E-Commerce
+  - Agent Commerce
+  - MCP
+  tags_raw:
   - Ecommerce
   - Agent Commerce
   - MCP
