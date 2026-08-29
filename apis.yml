@@ -12,6 +12,17 @@ description: 'The Premier Lacrosse League (PLL) is the professional field lacros
   agent-driven commerce. The league publishes no developer portal, no OpenAPI and no public API
   documentation; every machine-readable surface below was discovered by probing.'
 url: https://raw.githubusercontent.com/api-evangelist/premier-lacrosse-league/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://premierlacrosseleague.com/wp-content/uploads/2019/03/PLL__Square_Logo_Social.png
 x-type: company
 x-source: harvest:secondary-market
