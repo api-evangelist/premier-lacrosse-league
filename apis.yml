@@ -53,7 +53,7 @@ tags:
 - Sports Statistics
 - Media and Entertainment
 - E-Commerce
-- Agent Commerce
+- Agentic Commerce
 - GraphQL
 - Fantasy Sports
 tags_raw:
@@ -96,7 +96,7 @@ apis:
   baseURL: https://shop.premierlacrosseleague.com
   tags:
   - E-Commerce
-  - Agent Commerce
+  - Agentic Commerce
   - MCP
   tags_raw:
   - Ecommerce
