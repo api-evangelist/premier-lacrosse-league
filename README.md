@@ -64,31 +64,103 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-The Premier Lacrosse League (PLL) is the professional field lacrosse league of North America,
-founded in 2018 by Paul and Mike Rabil and headquartered in El Segundo, California. It played its
-inaugural season in 2019, absorbed Major League Lacrosse in December 2020, and now fields eight
-city-affiliated clubs across an Eastern and a Western conference, broadcast on ESPN, ESPN2, ABC and
-ESPN+.
+The Premier Lacrosse League (PLL) is the professional field lacrosse league of North America, founded in 2018 by brothers Paul and Mike Rabil and headquartered in El Segundo, California. It played its inaugural season in 2019 as a tour-based league, absorbed Major League Lacrosse in December 2020, and now fields eight city-affiliated clubs across an Eastern and a Western conference. Games are carried by ESPN, ESPN2, ABC and ESPN+, and investors include The Chernin Group, The Raine Group, Arctos Partners and ESPN itself. Digitally the league runs a Next.js web property with an Apollo GraphQL API behind it (premierlacrosseleague.com/api/graphql), a dedicated stats site, iOS and Android apps, and a Shopify-hosted merchandise store that publishes an llms.txt, a Universal Commerce Protocol (UCP) profile and an MCP endpoint for agent-driven commerce. The league publishes no developer portal, no OpenAPI and no public API documentation; every machine-readable surface below was discovered by probing.
 
-- Website: https://premierlacrosseleague.com/
-- Stats: https://stats.premierlacrosseleague.com/
-- Shop: https://shop.premierlacrosseleague.com/
-- GitHub: https://github.com/Premier-Lacrosse-League
+**Areas:** Company · Sports · Lacrosse · Professional Sports League · Sports Statistics · Media and Entertainment · E-Commerce · Agentic Commerce · GraphQL · Fantasy Sports
 
-## API surface
+## Premier Lacrosse League on APIs.io
 
-The league publishes **no developer portal, no OpenAPI and no API documentation**. Everything in
-this repo was discovered by probing on 2026-08-02 and is recorded as observed:
+Everything profiled for Premier Lacrosse League is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/premier-lacrosse-league/](https://apis.io/providers/premier-lacrosse-league/)** — or go straight to one of the APIs or properties below.
 
-| Surface | Endpoint | State |
-|---|---|---|
-| Web GraphQL API | `https://premierlacrosseleague.com/api/graphql` | Live Apollo Server. Origin-restricted, introspection disabled. Root fields `team` and `allTeams` confirmed. |
-| Shop storefront JSON | `https://shop.premierlacrosseleague.com/collections/{handle}/products.json` | Public, unauthenticated, paginated. |
-| Shop UCP MCP | `https://shop.premierlacrosseleague.com/api/ucp/mcp` | Live JSON-RPC 2.0 MCP server. `tools/list` gated on a UCP agent profile URI. |
-| Shop OAuth / OIDC | `https://account.premierlacrosseleague.com/authentication/oauth/*` | RFC 8414 + OIDC discovery published, PKCE S256, 4 scopes. |
+### APIs (2)
 
-Not found anywhere on the estate: OpenAPI, AsyncAPI, webhooks, A2A agent card, `security.txt`,
-status page, changelog, deprecation policy, SDKs, CLI, or a published compliance programme.
+- [Premier Lacrosse League Web GraphQL API](https://apis.io/apis/premier-lacrosse-league/premier-lacrosse-league-web-graphql-api/) — Apollo Server GraphQL API that backs premierlacrosseleague.com and stats.premierlacrosseleague.com (teams, players, games, standings, stats). Undocumented…
+- [Premier Lacrosse League Shop Storefront and Agent Commerce API](https://apis.io/apis/premier-lacrosse-league/premier-lacrosse-league-shop-storefront-and-agent-commerce-api/) — The league's Shopify-hosted merchandise store exposes a public, unauthenticated product/collection JSON surface, a Universal Commerce Protocol (UCP)…
 
-`robots.txt` carries `Content-Signal: search=yes,ai-train=no,use=reference` and disallows
-Amazonbot, Applebot-Extended and Bytespider.
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [premier-lacrosse-league-shop](https://apis.io/servers/premier-lacrosse-league/premier-lacrosse-league-shop/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Premier Lacrosse League Authentication](https://apis.io/security/premier-lacrosse-league/premier-lacrosse-league-authentication/)
+- [Premier Lacrosse League Domain Security](https://apis.io/security/premier-lacrosse-league/premier-lacrosse-league-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Premier Lacrosse League Scopes](https://apis.io/scopes/premier-lacrosse-league/premier-lacrosse-league-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://premierlacrosseleague.com/)
+- [Sign up](https://shop.premierlacrosseleague.com/account/register)
+- [Support](https://premierlacrosseleague.com/contact-page)
+- [Blog](https://premierlacrosseleague.com/articles)
+- [Terms of service](https://premierlacrosseleague.com/terms-of-service)
+- [Privacy policy](https://premierlacrosseleague.com/privacy-policy)
+- [GitHub](https://github.com/Premier-Lacrosse-League)
+
+## API Evangelist rating
+
+**Kin Score 23.9** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 20.8 |
+| Access clarity | 34.2 |
+
+**Agent readiness 21.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/premier-lacrosse-league/](https://apis.io/providers/premier-lacrosse-league/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Premier Lacrosse League: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/premier-lacrosse-league/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
